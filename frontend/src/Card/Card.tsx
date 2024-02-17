@@ -8,7 +8,7 @@ const Card: React.FC = () => {
         </a>
         <div class="p-4">
           <h5 class="mb-2 text-xl font-medium leading-tight text-neutral-800 dark:text-neutral-50">#1010</h5>
-          <p class="mb-2 text-base text-neutral-400 dark:text-neutral-200">Leased at:</p>
+          <p class="mb-2 text-base text-neutral-400 dark:text-neutral-200">leased until:</p>
         </div>
       </div>
     );
