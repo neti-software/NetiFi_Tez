@@ -6,6 +6,7 @@ import beams from './assets/beams.jpeg'
 import grid from './assets/grid.svg'
 import Navbar from './Nav/Navbar'
 import Card from './Card/Card'
+import RegisterForLeaseList from "./RegisterForLease";
 import './App.css'
 
 const people = [
@@ -20,6 +21,25 @@ const people = [
     name: 'CryptoPunk',
     avatar:
       'https://i.seadn.io/s/raw/files/f3564ef33373939b024fb791f21ec37b.png?auto=format&dpr=1&w=3840',
+  }
+]
+
+const list = [
+  {
+    id: 0,
+    name: 'name0'
+  },
+  {
+    id: 1,
+    name: 'name1'
+  },
+  {
+    id: 2,
+    name: 'name2'
+  },
+  {
+    id: 3,
+    name: 'name3'
   }
 ]
 
@@ -102,6 +122,10 @@ function NFTList() {
 function App() {
   const [count, setCount] = useState(0)
 
+  const register = (id) => {
+    console.log('register', id)
+  }
+
   return (
     <>
       <Navbar /> 
@@ -125,6 +149,9 @@ function App() {
                 <Card />
 
                 </div>
+
+                <p className="text-left text-2xl font-bold text-gray-800 mb-4">Register for lease:</p>
+                <RegisterForLeaseList list={list} register={register} />
               </div>
 
 
