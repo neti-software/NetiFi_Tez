@@ -29,10 +29,14 @@ const ConnectButton = ({
   setUserBalance,
   setStorage,
   contractAddress,
+  beaconConnection,
   setBeaconConnection,
   setPublicToken,
   wallet,
 }: ButtonProps): JSX.Element => {
+
+  const [isLoadingCheckConnected, setIsLoadingCheckConnected] = useState<boolean>(true)
+
   const setup = async (userAddress: string): Promise<void> => {
     setUserAddress(userAddress); 
     const balance = await Tezos.tz.getBalance(userAddress);
@@ -60,10 +64,33 @@ const ConnectButton = ({
     }
   };
 
+  const disconnectWallet = async (): Promise<void> => {
+    await wallet.disconnect();
+    setBeaconConnection(false);
+  };
+
+  const checkIfWalletConnected = async (wallet): Promise<{ success: boolean }> => {
+    try {
+      const activeAccount = await wallet.client.getActiveAccount();
+      if (!activeAccount) {
+        await wallet.client.requestPermissions({
+          type: { network: preferredNetwork },
+        });
+      }
+      return {
+        success: true,
+      };
+    } catch (error) {
+      return {
+        success: false,
+        error,
+      };
+    }
+  };
+
   useEffect(() => {
 
     (async () => {
-debugger;
        wallet = new BeaconWallet({
         name: "NetiFi_Tez",
         network: {
@@ -81,14 +108,20 @@ debugger;
         await setup(userAddress); 
         setBeaconConnection(true);
       }
+      const isConnected = await checkIfWalletConnected(wallet);
+      setBeaconConnection(isConnected.success)
+      setIsLoadingCheckConnected(false)
     })();
   }, []);
 
     return (
         <button
-            onClick={connectWallet}
+            onClick={beaconConnection ? disconnectWallet : connectWallet}
             type="button"
-            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Connect Wallet</button>
+
+            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+          {isLoadingCheckConnected ? 'Checking connection...' : beaconConnection ? 'Disconnect Wallet' : 'Connect Wallet'}
+        </button>
 
 
     );

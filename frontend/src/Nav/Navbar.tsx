@@ -35,6 +35,7 @@ const Navbar: React.FC = () => {
             setUserBalance={setUserBalance}
             setStorage={setStorage}
             contractAddress={contractAddress}
+            beaconConnection={beaconConnection}
             setBeaconConnection={setBeaconConnection}
             wallet={wallet}
           />
