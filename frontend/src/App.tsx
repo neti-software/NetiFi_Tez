@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { Listbox, Transition } from '@headlessui/react'
 
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
@@ -7,32 +7,29 @@ import grid from './assets/grid.svg'
 import Navbar from './Nav/Navbar'
 import Card from './Card/Card'
 import './App.css'
-
-const people = [
-  {
-    id: 1,
-    name: 'Bored Ape Yacht Club',
-    avatar:
-      'https://image.binance.vision/editor-uploads-original/9c15d9647b9643dfbc5e522299d13593.png',
-  },
-  {
-    id: 2,
-    name: 'CryptoPunk',
-    avatar:
-      'https://i.seadn.io/s/raw/files/f3564ef33373939b024fb791f21ec37b.png?auto=format&dpr=1&w=3840',
-  }
-]
+import {getRegisteredNfts, getUserLeasedNfts} from './services/leaseManager'
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
+type NFTListProps = {
+  nfts: any[]
+}
+function NFTList({ nfts }: NFTListProps) {
+  const [selected, setSelected] = useState<any>(null)
+  useEffect(() => {
+    if (nfts && nfts.length > 0) {
+      setSelected(nfts[0]);
+    }
+  }, [nfts]);
 
-function NFTList() {
-  const [selected, setSelected] = useState(people[0])
+  if (!selected) {
+    return <div>Loading NFTs...</div>;
+  }
 
   return (
     <Listbox value={selected} onChange={setSelected}>
-            {({ open }) => (
+      {({ open }) => (
         <>
           <Listbox.Label className="block text-sm font-medium leading-6 text-gray-900">Lease new:</Listbox.Label>
           <div className="relative mt-2">
@@ -54,25 +51,25 @@ function NFTList() {
               leaveTo="opacity-0"
             >
               <Listbox.Options className="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                {people.map((person) => (
+                {nfts.map((nft) => (
                   <Listbox.Option
-                    key={person.id}
+                    key={nft.token_address}
                     className={({ active }) =>
                       classNames(
                         active ? 'bg-indigo-600 text-white' : 'text-gray-900',
                         'relative cursor-default select-none py-2 pl-3 pr-9'
                       )
                     }
-                    value={person}
+                    value={nft}
                   >
                     {({ selected, active }) => (
                       <>
                         <div className="flex items-center">
-                          <img src={person.avatar} alt="" className="h-5 w-5 flex-shrink-0 rounded-full" />
+                          <img src={nft.avatar} alt="" className="h-5 w-5 flex-shrink-0 rounded-full" />
                           <span
                             className={classNames(selected ? 'font-semibold' : 'font-normal', 'ml-3 block truncate')}
                           >
-                            {person.name}
+                            {nft.name}
                           </span>
                         </div>
 
@@ -101,17 +98,35 @@ function NFTList() {
 
 function App() {
   const [count, setCount] = useState(0)
+  const [walletInstance, setWalletInstance] = useState(null);
+  const [userAddress, setUserAddress] = useState("");
+  const [nfts, setNfts] = useState<any>(null);
+  const [userNfts, setUserNfts] = useState<any>([]);
+
+
+  useEffect(() => {
+    const fetchNFTs = async () => {
+      const registeredNfts = await getRegisteredNfts();
+      setNfts(registeredNfts);
+      if(userAddress != ""){
+        const userNfts = await getUserLeasedNfts(userAddress);
+        setUserNfts(userNfts);
+      }
+    };
+
+    fetchNFTs();
+  }, [userAddress]);
 
   return (
     <>
-      <Navbar /> 
+      <Navbar setWalletInstance={setWalletInstance} setUserAddress={setUserAddress} />
       <div class="relative flex min-h-screen flex-col justify-center overflow-hidden bg-gray-50 py-6 sm:py-12">
         <img src={beams} alt="" class="absolute top-1/2 left-1/2 max-w-none -translate-x-1/2 -translate-y-1/2" width="1308" />
         <div class="absolute inset-0 bg-[url(./assets/grid.svg)] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]"></div>
         <div class="relative bg-white px-10 pt-14 pb-12 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-4xl sm:rounded-lg sm:px-14">
-        <NFTList />
-        <br />
-        <div className="flex justify-center">
+          <NFTList nfts={nfts} />
+          <br />
+          <div className="flex justify-center">
             <button type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Lease</button>
           </div>
           <br />
@@ -119,11 +134,13 @@ function App() {
             <div class="divide-y divide-gray-300/50">
               <div class="space-y-6 pb-8 text-base leading-7 text-gray-600">
 
-              <p class="text-left text-2xl font-bold text-gray-800 mb-4">Your current leases:</p>
+                <p class="text-left text-2xl font-bold text-gray-800 mb-4">Your current leases:</p>
                 <div class="flex space-x-4 justify-center">
-                <Card />
-                <Card />
-
+                  {
+                    userNfts.map((nft: any)=>(
+                      <Card key={nft.token_address} dueDate={nft.due_date} avatar={nft.avatar} />
+                    ))
+                  }
                 </div>
               </div>
 

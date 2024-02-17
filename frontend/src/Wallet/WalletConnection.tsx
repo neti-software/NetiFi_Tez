@@ -10,38 +10,19 @@ import {
 
 type ButtonProps = {
   Tezos: TezosToolkit; // TezosToolkit instance for interacting with the Tezos blockchain
-  setContract: Dispatch<SetStateAction<any>>;
-  setWallet: Dispatch<SetStateAction<any>>; // Function to update wallet state
+  setWalletInstance: Dispatch<SetStateAction<any>>; // Function to update wallet state
   setUserAddress: Dispatch<SetStateAction<string>>;
-  setUserBalance: Dispatch<SetStateAction<number>>; 
-  setStorage: Dispatch<SetStateAction<number>>; 
-  contractAddress: string; // Address of the smart contract
-  setBeaconConnection: Dispatch<SetStateAction<boolean>>; // Function to update beacon connection state
-  setPublicToken: Dispatch<SetStateAction<string | null>>; // Function to update public token state
   wallet: BeaconWallet; // BeaconWallet instance for wallet connectivity
 };
 
 const ConnectButton = ({
   Tezos,
-  setContract,
-  setWallet,
+  setWalletInstance,
   setUserAddress,
-  setUserBalance,
-  setStorage,
-  contractAddress,
-  setBeaconConnection,
-  setPublicToken,
   wallet,
 }: ButtonProps): JSX.Element => {
   const setup = async (userAddress: string): Promise<void> => {
     setUserAddress(userAddress); 
-    const balance = await Tezos.tz.getBalance(userAddress);
-    setUserBalance(balance.toNumber());
-    // Create a contract instance for the smart contract at the specified address
-    const contract = await Tezos.wallet.at(contractAddress);
-    const storage: any = await contract.storage(); // Get the contract storage
-    setContract(contract); 
-    setStorage(storage); 
   };
 
   const connectWallet = async (): Promise<void> => {
@@ -54,7 +35,6 @@ const ConnectButton = ({
 
       const userAddress = await wallet.getPKH();
       await setup(userAddress); 
-      setBeaconConnection(true); 
     } catch (error) {
       console.log(error); 
     }
@@ -63,23 +43,21 @@ const ConnectButton = ({
   useEffect(() => {
 
     (async () => {
-debugger;
-       wallet = new BeaconWallet({
+
+      wallet = new BeaconWallet({
         name: "NetiFi_Tez",
         network: {
           type: NetworkType.GHOSTNET,
           rpcUrl: "https://ghostnet.smartpy.io"
         }
       });
-      console.log(wallet);
 
       Tezos.setWalletProvider(wallet); 
-      setWallet(wallet); 
+      setWalletInstance(wallet); 
       const activeAccount = await wallet.client.getActiveAccount();
       if (activeAccount) {
         const userAddress = await wallet.getPKH(); 
         await setup(userAddress); 
-        setBeaconConnection(true);
       }
     })();
   }, []);
