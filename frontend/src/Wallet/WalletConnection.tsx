@@ -48,7 +48,6 @@ const ConnectButton = ({
   };
 
   const disconnectWallet = async (): Promise<void> => {
-    debugger;
     await wallet_.disconnect();
     setBeaconConnection(false);
   };

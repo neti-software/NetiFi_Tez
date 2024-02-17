@@ -1,48 +1,33 @@
-import { Fragment, useEffect, useState } from 'react'
+import { Fragment, useEffect, useState, Dispatch, SetStateAction } from 'react'
 import { Listbox, Transition } from '@headlessui/react'
 
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
 import beams from './assets/beams.jpeg'
-import grid from './assets/grid.svg'
 import Navbar from './Nav/Navbar'
 import Card from './Card/Card'
 import RegisterForLeaseList from "./RegisterForLease";
 import './App.css'
-import {getRegisteredNfts, getUserLeasedNfts} from './services/leaseManager'
-
-const list = [
-  {
-    id: 0,
-    name: 'name0'
-  },
-  {
-    id: 1,
-    name: 'name1'
-  },
-  {
-    id: 2,
-    name: 'name2'
-  },
-  {
-    id: 3,
-    name: 'name3'
-  }
-]
+import { getRegisteredNfts, getUserLeasedNfts, getUserNotLeasedNfts, registerNft, leaseNft } from './services/leaseManager'
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 type NFTListProps = {
   nfts: any[]
+  setSelectedToLease: Dispatch<SetStateAction<any>>;
 }
-function NFTList({ nfts }: NFTListProps) {
+function NFTList({ nfts, setSelectedToLease }: NFTListProps) {
   const [selected, setSelected] = useState<any>(null)
   useEffect(() => {
     if (nfts && nfts.length > 0) {
       setSelected(nfts[0]);
     }
   }, [nfts]);
-
+  useEffect(() => {
+    if (selected) {
+      setSelectedToLease(selected);
+    }
+  }, [selected, setSelectedToLease]);
   if (!selected) {
     return <div>Loading NFTs...</div>;
   }
@@ -122,23 +107,32 @@ function App() {
   const [userAddress, setUserAddress] = useState("");
   const [nfts, setNfts] = useState<any>(null);
   const [userNfts, setUserNfts] = useState<any>([]);
+  const [userNotLeasedNfts, setUserNotLeasedNfts] = useState<any>([]);
+  const [selectedToLease, setSelectedToLease] = useState<any>(null);
 
 
   useEffect(() => {
     const fetchNFTs = async () => {
       const registeredNfts = await getRegisteredNfts();
       setNfts(registeredNfts);
-      if(userAddress != ""){
+      if (userAddress != "") {
         const userNfts = await getUserLeasedNfts(userAddress);
+        const notLeased = await getUserNotLeasedNfts(userAddress);
         setUserNfts(userNfts);
+        setUserNotLeasedNfts(notLeased);
       }
     };
 
     fetchNFTs();
   }, [userAddress]);
 
-  const register = (id) => {
-    console.log('register', id)
+
+  const register = async (tokenId: number, token_address: string) => {
+    await registerNft(walletInstance, token_address, tokenId);
+  }
+
+  const leaseNftHandler = async () =>{
+    await leaseNft(walletInstance, selectedToLease.token_address, selectedToLease.token_id)
   }
 
   return (
@@ -148,10 +142,10 @@ function App() {
         <img src={beams} alt="" class="absolute top-1/2 left-1/2 max-w-none -translate-x-1/2 -translate-y-1/2" width="1308" />
         <div class="absolute inset-0 bg-[url(./assets/grid.svg)] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]"></div>
         <div class="relative bg-white px-10 pt-14 pb-12 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-4xl sm:rounded-lg sm:px-14">
-          <NFTList nfts={nfts} />
+          <NFTList nfts={nfts} setSelectedToLease={setSelectedToLease} />
           <br />
           <div className="flex justify-center">
-            <button type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Lease</button>
+            <button type="button" hidden={!selectedToLease} onClick={leaseNftHandler} className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Lease</button>
           </div>
           <br />
           <div class="mx-auto max-w-lg">
@@ -161,14 +155,14 @@ function App() {
                 <p class="text-left text-2xl font-bold text-gray-800 mb-4">Your current leases:</p>
                 <div class="flex space-x-4 justify-center">
                   {
-                    userNfts.map((nft: any)=>(
+                    userNfts.map((nft: any) => (
                       <Card key={nft.token_address} dueDate={nft.due_date} avatar={nft.avatar} />
                     ))
                   }
                 </div>
 
                 <p className="text-left text-2xl font-bold text-gray-800 mb-4">Register for lease:</p>
-                <RegisterForLeaseList list={list} register={register} />
+                <RegisterForLeaseList list={userNotLeasedNfts} register={register} />
               </div>
 
 
