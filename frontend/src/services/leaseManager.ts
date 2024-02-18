@@ -103,12 +103,12 @@ const registerNft = async (wallet: any, token_addres: string, token_id: number) 
         const contract = await buildContract(leaseManagerContractAddress);
         const op = await contract.methodsObject.register({ token_address: token_addres, token_id: token_id, lease_contract: leaseManagerContractAddress }).send();
         await op.confirmation(1);
-        console.log(`Operation injected: https://ghost.tzstats.com/${op.hash}`)
+        console.log(`Operation injected: https://ghost.tzstats.com/${op.opHash}`)
         const token = await buildContract(token_addres);
         const walletAddress = await wallet.getPKH();
         const op2 = await token.methodsObject.transfer([{ from_: walletAddress, txs: [{ to_: leaseManagerContractAddress, token_id: token_id, amount: 1 }] }]).send();
         await op2.confirmation(1);
-        console.log(`Operation injected: https://ghost.tzstats.com/${op2.hash}`)
+        console.log(`Operation injected: https://ghost.tzstats.com/${op2.opHash}`)
     } catch (error) {
         debugger;
         console.error(error);
@@ -122,7 +122,7 @@ const leaseNft = async (wallet: any, token_addres: string, token_id: number) => 
         const token = await buildContract(leaseManagerContractAddress);
         const op = await token.methodsObject.lease({ token_address: token_addres, token_id: token_id, lease_contract: leaseManagerContractAddress }).send();
         await op.confirmation(1);
-        console.log(`Operation injected: https://ghost.tzstats.com/${op.hash}`)
+        console.log(`Operation injected: https://ghost.tzstats.com/${op.opHash}`)
     } catch (error) {
         console.error(error);
     }

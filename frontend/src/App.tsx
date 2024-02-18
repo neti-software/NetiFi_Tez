@@ -9,7 +9,7 @@ import RegisterForLeaseList from "./RegisterForLease";
 import './App.css'
 import { getRegisteredNfts, getUserLeasedNfts, getUserNotLeasedNfts, registerNft, leaseNft } from './services/leaseManager'
 
-function classNames(...classes) {
+function classNames(...classes : any) {
   return classes.filter(Boolean).join(' ')
 }
 type NFTListProps = {
@@ -102,7 +102,6 @@ function NFTList({ nfts, setSelectedToLease }: NFTListProps) {
 }
 
 function App() {
-  const [count, setCount] = useState(0)
   const [walletInstance, setWalletInstance] = useState(null);
   const [userAddress, setUserAddress] = useState("");
   const [nfts, setNfts] = useState<any>(null);
@@ -138,22 +137,22 @@ function App() {
   return (
     <>
       <Navbar setWalletInstance={setWalletInstance} setUserAddress={setUserAddress} />
-      <div class="relative flex min-h-screen flex-col justify-center overflow-hidden bg-gray-50 py-6 sm:py-12">
-        <img src={beams} alt="" class="absolute top-1/2 left-1/2 max-w-none -translate-x-1/2 -translate-y-1/2" width="1308" />
-        <div class="absolute inset-0 bg-[url(./assets/grid.svg)] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]"></div>
-        <div class="relative bg-white px-10 pt-14 pb-12 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-4xl sm:rounded-lg sm:px-14">
+      <div className="relative flex min-h-screen flex-col justify-center overflow-hidden bg-gray-50 py-6 sm:py-12">
+        <img src={beams} alt="" className="absolute top-1/2 left-1/2 max-w-none -translate-x-1/2 -translate-y-1/2" width="1308" />
+        <div className="absolute inset-0 bg-[url(./assets/grid.svg)] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]"></div>
+        <div className="relative bg-white px-10 pt-14 pb-12 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-4xl sm:rounded-lg sm:px-14">
           <NFTList nfts={nfts} setSelectedToLease={setSelectedToLease} />
           <br />
           <div className="flex justify-center">
             <button type="button" hidden={!selectedToLease} onClick={leaseNftHandler} className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Lease</button>
           </div>
           <br />
-          <div class="mx-auto max-w-lg">
-            <div class="divide-y divide-gray-300/50">
-              <div class="space-y-6 pb-8 text-base leading-7 text-gray-600">
+          <div className="mx-auto max-w-lg">
+            <div className="divide-y divide-gray-300/50">
+              <div className="space-y-6 pb-8 text-base leading-7 text-gray-600">
 
-                <p class="text-left text-2xl font-bold text-gray-800 mb-4">Your current leases:</p>
-                <div class="flex space-x-4 justify-center">
+                <p className="text-left text-2xl font-bold text-gray-800 mb-4">Your current leases:</p>
+                <div className="flex space-x-4 justify-center">
                   {
                     userNfts.map((nft: any) => (
                       <Card key={nft.token_address} dueDate={nft.due_date} avatar={nft.avatar} />

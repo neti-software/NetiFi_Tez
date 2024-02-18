@@ -1,33 +1,25 @@
 // Import necessary modules from React and @taquito/taquito
-import React, { Dispatch, SetStateAction, useState, useEffect } from "react";
-import { TezosToolkit } from "@taquito/taquito";
+import { Dispatch, SetStateAction, useState, useEffect } from "react";
 import { BeaconWallet } from "@taquito/beacon-wallet";
 import {
   NetworkType,
-  BeaconEvent,
-  defaultEventCallbacks,
 } from "@airgap/beacon-dapp";
 
 type ButtonProps = {
-  Tezos: TezosToolkit; // TezosToolkit instance for interacting with the Tezos blockchain
   setWalletInstance: Dispatch<SetStateAction<any>>; // Function to update wallet state
   setUserAddress: Dispatch<SetStateAction<string>>;
-  wallet: BeaconWallet; // BeaconWallet instance for wallet connectivity
 };
 
 const ConnectButton = ({
-  Tezos,
   setWalletInstance,
-  setUserAddress,
-  wallet,
-
+  setUserAddress
 }: ButtonProps): JSX.Element => {
 
   const [isLoadingCheckConnected, setIsLoadingCheckConnected] = useState<boolean>(true)
   const [beaconConnection, setBeaconConnection] = useState<boolean>(false)
   const [wallet_, setWallet_] = useState<any>(null);
   const setup = async (userAddress: string): Promise<void> => {
-    setUserAddress(userAddress); 
+    setUserAddress(userAddress);
   };
 
   const connectWallet = async (): Promise<void> => {
@@ -39,11 +31,11 @@ const ConnectButton = ({
       });
 
       const userAddress = await wallet_.getPKH();
-      await setup(userAddress); 
+      await setup(userAddress);
       setBeaconConnection(true)
       setIsLoadingCheckConnected(false)
     } catch (error) {
-      console.log(error); 
+      console.log(error);
     }
   };
 
@@ -74,7 +66,7 @@ const ConnectButton = ({
 
     (async () => {
 
-      wallet = new BeaconWallet({
+      const wallet = new BeaconWallet({
         name: "NetiFi_Tez",
         network: {
           type: NetworkType.GHOSTNET,
@@ -82,13 +74,12 @@ const ConnectButton = ({
         }
       });
 
-      Tezos.setWalletProvider(wallet); 
-      setWalletInstance(wallet); 
+      setWalletInstance(wallet);
       setWallet_(wallet);
       const activeAccount = await wallet.client.getActiveAccount();
       if (activeAccount) {
-        const userAddress = await wallet.getPKH(); 
-        await setup(userAddress); 
+        const userAddress = await wallet.getPKH();
+        await setup(userAddress);
       }
       const isConnected = await checkIfWalletConnected(wallet);
       setBeaconConnection(isConnected.success)
@@ -96,17 +87,17 @@ const ConnectButton = ({
     })();
   }, []);
 
-    return (
-        <button
-            onClick={beaconConnection ? disconnectWallet : connectWallet}
-            type="button"
+  return (
+    <button
+      onClick={beaconConnection ? disconnectWallet : connectWallet}
+      type="button"
 
-            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-          {isLoadingCheckConnected ? 'Checking connection...' : beaconConnection ? 'Disconnect Wallet' : 'Connect Wallet'}
-        </button>
+      className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+      {isLoadingCheckConnected ? 'Checking connection...' : beaconConnection ? 'Disconnect Wallet' : 'Connect Wallet'}
+    </button>
 
 
-    );
+  );
 };
 
 export default ConnectButton;
