@@ -1,8 +1,8 @@
 import { TezosToolkit } from '@taquito/taquito';
 const Tezos = new TezosToolkit('https://ghostnet.smartpy.io');
 
-const nftContractAddress: string = "KT1WjVHHVoCfigCQiEUtSfNE8Dkm6gn3K8kF";
-const leaseManagerContractAddress: string = "KT1K96M3CUdnDdUSnxJHL8hvQKyKFV1SbDNK";
+const nftContractAddress: string = "KT1DxrfYNR6nyhbdj8jjZ8qR4pML7WxDi8Z5";
+const leaseManagerContractAddress: string = "KT1BxFdAtcn5kPscmT3wmwdMQmxA1AaAP1Q5";
 
 const getRegisteredNfts = async (): Promise<any[]> => {
     const contract = await buildContract(leaseManagerContractAddress);
