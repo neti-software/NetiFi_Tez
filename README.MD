@@ -1,16 +1,5 @@
 # NFT lending platform for GameFi that allows users to borrow Game Item represented by NFT
 
-## Table of Contents
-- [Overview](#overview)
-- [Technology Stack](#technology-stack)
-- [Key Features](#key-features)
-- [Future Enhancements](#future-enhancements)
-- [Installation, Setup and Testing](#installation-setup-and-testing)
-- [Usage: LeaseManager Contract Entrypoints](#usage-leasemanager-contract-entrypoints)
-- [Testing the LeaseManager Contract](#testing-the-leasemanager-contract)
-- [Contributing](#contributing)
-- [Contact](#contact)
-
 ## Overview
 # NeRINE by Neti
 
@@ -46,6 +35,17 @@ Well, what we built during the hackathon is just proof of technology. We know ho
 ## Technology Stack
 - **SmartPy**: A language for developing smart contracts on the Tezos blockchain.
 - **Smartpy.io IDE**: An integrated development environment for SmartPy.
+
+## Table of Contents
+- [Overview](#overview)
+- [Technology Stack](#technology-stack)
+- [Key Features](#key-features)
+- [Future Enhancements](#future-enhancements)
+- [Installation, Setup and Testing](#installation-setup-and-testing)
+- [Usage: LeaseManager Contract Entrypoints](#usage-leasemanager-contract-entrypoints)
+- [Testing the LeaseManager Contract](#testing-the-leasemanager-contract)
+- [Contributing](#contributing)
+- [Contact](#contact)
 
 ## Key Features
 1. **NFT Registration in Lease Manager Contract**: 
