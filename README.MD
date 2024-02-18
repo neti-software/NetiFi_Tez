@@ -12,8 +12,37 @@
 - [Contact](#contact)
 
 ## Overview
-Tezos NFT Rental is an innovative platform designed for the rental of gaming items represented as Non-Fungible Tokens (NFTs), developed by Neti, a leading Blockchain Development Company.
+# NeRINE by Neti
 
+[![](https://i.ibb.co/YBKd41Z/995f2fe6-f795-4a6f-b634-5d9a1cf4082a.webp)](https://github.com/neti-software/NetiFi_Tez) 
+
+## The problem
+Hi, we are Neti - a software development boutique hooked on blockchain. We believe that NFT tokens (apart from the art) have a huge utility potential. But why would you have to buy NFT to use it? You can borrow a bike from your friend without any collateral, you can borrow a laptop or jacket. Why not NFT?
+
+## The solution
+With the rescue comes **NeRINE - Neti Rental Interface for NFT Ecosystem**. It's the first solution on the market that offers the possibility of safely renting NFTs without the need to pay a deposit while guaranteeing both parties the return of the item on agreed terms. Most importantly, you don't need to lock any deposit; only the amount agreed for renting. Interesting?
+
+## Architecture.
+- The owner of the NFT registers the token as "ready to be rented" and specifies the deal's details: time of rent, price, etc. 
+- Our "lease manager" (a smart contract) sets itself as the operator. It means it can transfer NFT to other users. 
+- The token is placed on the marketplace so that everyone can borrow it just for the agreed price and for an agreed period 
+- After borrowing the token, the user can use its utility for the agreed period
+- When the rental period finishes, our "leas manger" will ensure that the token is returned to the original owner.
+
+## How is this magic possible?
+It works with the usage of Tezos Custom Policy, the functionality that is present only on the Tezos chain. It allows us to set the operator's role to the smart contract for the given NFT and enforce return through that mechanism later on. 
+
+## What is so unique in this approach?
+- Users don't need to put collateral to borrow the NFT
+- The owner of the NFT has a guarantee that after the agreed period, the token will be returned to him.
+
+Practical use cases for NeRINE? Let's name a few: 
+- Items market in the computer gaming industry, which allows you to make money on the items you have in a safe way
+- Subscription model through renting NFT, which allows any application to behave like a Web2 SaaS platform
+- Safely borrow NFT to a friend (even for free) with the guarantee of return. The NFT can represent tickets, access to some resources, or whatever you need :)
+
+## Where we are
+Well, what we built during the hackathon is just proof of technology. We know how to make it work for all NFS on the Tezos chain, and we have ideas on how the approach can be monetized and profitable for NFT creators and also users. For us, it's just the beginning of the story.  
 ## Technology Stack
 - **SmartPy**: A language for developing smart contracts on the Tezos blockchain.
 - **Smartpy.io IDE**: An integrated development environment for SmartPy.
@@ -28,12 +57,6 @@ Tezos NFT Rental is an innovative platform designed for the rental of gaming ite
 3. **Returning NFTs**: 
    - Post the expiration of the rental period, the NFT is returned to its original owner by the Lease Manager Contract. Subsequently, the NFT is unlocked and deregistered from the Lease Manager Contract, enabling the owner to transfer it freely.
 
-## Future Enhancements
-- **Integration of Various NFT Types on the Tezos Network**: 
-   - A future development goal involves enabling the registration of externally minted NFTs. This would be achieved by wrapping these NFTs within the Rental System’s framework, allowing them to be seamlessly integrated into the rental process without any modifications to the original NFT. This enhancement requires updates to the Tezos wallet system to recognize wrapped NFTs and reveal the original NFTs to the lessees. Implementing this feature will significantly expand the scope of assets available for rental on the Tezos network, enhancing the platform's adaptability and utility.
-- **Prolongation of NFT Rental Periods**:
-   - An upcoming feature will allow lessees to prolongate the rental period of an NFT. This functionality will enable users to extend their lease directly through the platform, subject to the terms set in the original rental agreement. The process will be automated and integrated into the Lease Manager Contract, ensuring a seamless experience.
-
 - **Secondary Market for NFT Rentals**:
    - Future enhancements include the development of a secondary market where users can rent out NFTs they have leased to other users. This will create a dynamic and user-driven rental ecosystem. A modified Tezos wallet will be introduced to facilitate these transactions, ensuring a secure and efficient process. The system will automatically distribute fees between the original NFT owner and the Rental platform, maintaining a fair revenue-sharing model.
 
@@ -44,7 +67,7 @@ Use the [smartpy.io environment](https://smartpy.io/ide?code=eJzlWltP5DgWfq9f4S1
 
 # Usage: LeaseManager Contract Entrypoints
 
-The `LeaseManager` contract in the Tezos NFT Rental Project has several entrypoints, each requiring specific data inputs. Below are the details for each entrypoint.
+The `LeaseManager` contract in the NeRINE has several entrypoints, each requiring specific data inputs. Below are the details for each entrypoint.
 
 ## Entrypoint: `register`
 
@@ -126,7 +149,7 @@ To ensure that the NFT's status is accurately updated throughout the lease proce
 
 
 ## Contributing
-Contributions to the Tezos NFT Rental project are welcome. Please follow standard open-source contribution guidelines.
+Contributions to the NeRINE project are welcome. Please follow standard open-source contribution guidelines.
 
 ## Contact
 For more information:
