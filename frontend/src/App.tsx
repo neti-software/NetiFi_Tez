@@ -160,7 +160,7 @@ function App() {
                   }
                 </div>
 
-                <p className="text-left text-2xl font-bold text-gray-800 mb-4">Register for lease:</p>
+                <p className="text-left text-2xl font-bold text-gray-800 mb-4">Register yout NFT for lease:</p>
                 <RegisterForLeaseList list={userNotLeasedNfts} register={register} />
               </div>
 

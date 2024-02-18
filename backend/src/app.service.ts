@@ -7,7 +7,7 @@ import { Cron, CronExpression } from '@nestjs/schedule';
 @Injectable()
 export class AppService {
 
-  @Cron(CronExpression.EVERY_5_SECONDS)
+  @Cron("0 */2 * * * *")
   async handleUnlease() {
     const contract = await this.buildContract(process.env.LEASE_CONTRACT_ADDRESS);
     const storage = await contract.storage() as any;
@@ -16,7 +16,6 @@ export class AppService {
     for(let k = 0;k<tokenMetadata.length;k++){
       const i = tokenMetadata[k];
       const leaseRecord = await storage.leaseRecords.get(i);
-      console.log(leaseRecord);
       if (leaseRecord.lease_data.is_leased && new Date(leaseRecord.lease_data.due_date) <= new Date()) {
         await this.unlease(leaseRecord.lease_data.token_data.token_address, leaseRecord.lease_data.token_data.token_id);
 

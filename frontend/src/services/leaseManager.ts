@@ -1,8 +1,8 @@
 import { TezosToolkit } from '@taquito/taquito';
 const Tezos = new TezosToolkit('https://ghostnet.smartpy.io');
 
-const nftContractAddress: string = "KT1TDbn6Lgop6MzQf6UaZuThwefWfaoHyvfS";
-const leaseManagerContractAddress: string = "KT1VqASL1GpCd6wW23dEsr164Csj3ydM2HMH";
+const nftContractAddress: string = "KT1WjVHHVoCfigCQiEUtSfNE8Dkm6gn3K8kF";
+const leaseManagerContractAddress: string = "KT1K96M3CUdnDdUSnxJHL8hvQKyKFV1SbDNK";
 
 const getRegisteredNfts = async (): Promise<any[]> => {
     const contract = await buildContract(leaseManagerContractAddress);
@@ -21,7 +21,7 @@ const getRegisteredNfts = async (): Promise<any[]> => {
 
             result.push({
                 name: tokenName, token_id: leaseRecord.lease_data.token_data.token_id.toNumber(), token_address: leaseRecord.lease_data.token_data.token_address, avatar:
-                    'https://i.seadn.io/s/raw/files/f3564ef33373939b024fb791f21ec37b.png?auto=format&dpr=1&w=3840'
+                    'https://lh3.googleusercontent.com/proxy/PHInYYVHMIJdzrnJcdL5jYRPJ5AKTbRnzp5qzM7mrCbFRub2wBmRTEWDVo8DaBd8T06SRHPqAytBar7VEtb16b6nU0srpbiOWuhs_4_dK-qLwX4ozLJXrhIPkXHN-jy69WOvW2YOFgRIhC7ngyppLD0QWU2cD8SIuQ'
             });
         }
     }
@@ -39,7 +39,7 @@ const getUserLeasedNfts = async (userAddress: string) => {
         if (leaseRecord.leaser == userAddress && leaseRecord.lease_data.is_leased) {
             result.push({
                 due_date: new Date(leaseRecord.lease_data.due_date),
-                avatar: 'https://i.seadn.io/s/raw/files/f3564ef33373939b024fb791f21ec37b.png?auto=format&dpr=1&w=3840',
+                avatar: 'https://lh3.googleusercontent.com/proxy/PHInYYVHMIJdzrnJcdL5jYRPJ5AKTbRnzp5qzM7mrCbFRub2wBmRTEWDVo8DaBd8T06SRHPqAytBar7VEtb16b6nU0srpbiOWuhs_4_dK-qLwX4ozLJXrhIPkXHN-jy69WOvW2YOFgRIhC7ngyppLD0QWU2cD8SIuQ',
                 token_address: leaseRecord.lease_data.token_data.token_address
             })
         }
@@ -54,7 +54,6 @@ const getUserNotLeasedNfts = async (userAddress: string) => {
         const tokens = await response.json();
         const contract = await buildContract(leaseManagerContractAddress);
         const storage = await contract.storage() as any;
-        debugger;
         const filteredTokens = tokens.map(async (t: any) => {
             const isLeasedResult = await isLeased(storage, t.token.contract.address, Number(t.token.tokenId));
             return {
@@ -69,7 +68,7 @@ const getUserNotLeasedNfts = async (userAddress: string) => {
             return {
                 tokenId: Number(token.token.tokenId),
                 token_address: token.token.contract.address,
-                avatar: 'https://i.seadn.io/s/raw/files/f3564ef33373939b024fb791f21ec37b.png?auto=format&dpr=1&w=3840',
+                avatar: 'https://lh3.googleusercontent.com/proxy/PHInYYVHMIJdzrnJcdL5jYRPJ5AKTbRnzp5qzM7mrCbFRub2wBmRTEWDVo8DaBd8T06SRHPqAytBar7VEtb16b6nU0srpbiOWuhs_4_dK-qLwX4ozLJXrhIPkXHN-jy69WOvW2YOFgRIhC7ngyppLD0QWU2cD8SIuQ',
                 name: token.token.metadata ? token.token.metadata.name : ""
             }
         }
@@ -83,13 +82,12 @@ const getUserNotLeasedNfts = async (userAddress: string) => {
 }
 
 const isLeased = async (storage: any, token_address: string, token_id: number) => {
-    debugger;
     const tokenMetadata = storage.leaseRecordKeys;
     for (let k = 0; k < tokenMetadata.length; k++) {
         const i = tokenMetadata[k];
         const leaseRecord = await storage.leaseRecords.get(i);
         const isLeased = leaseRecord.lease_data.is_leased && leaseRecord.lease_data.token_data.token_address == token_address && leaseRecord.lease_data.token_data.token_id == token_id;
-        const isRegistered = leaseRecord.leaser == leaseManagerContractAddress;
+        const isRegistered = leaseRecord.leaser == leaseManagerContractAddress && leaseRecord.lease_data.token_data.token_address == token_address && leaseRecord.lease_data.token_data.token_id == token_id;
         if (isLeased || isRegistered) {
             return true;
         }
@@ -110,14 +108,12 @@ const registerNft = async (wallet: any, token_addres: string, token_id: number) 
         await op2.confirmation(1);
         console.log(`Operation injected: https://ghost.tzstats.com/${op2.opHash}`)
     } catch (error) {
-        debugger;
         console.error(error);
     }
 }
 
 const leaseNft = async (wallet: any, token_addres: string, token_id: number) => {
     try {
-        debugger;
         Tezos.setWalletProvider(wallet);
         const token = await buildContract(leaseManagerContractAddress);
         const op = await token.methodsObject.lease({ token_address: token_addres, token_id: token_id, lease_contract: leaseManagerContractAddress }).send();
