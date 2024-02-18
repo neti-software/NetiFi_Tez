@@ -82,8 +82,8 @@ def LeaseNFT():
         def register(self, nft_data):
             sp.cast(nft_data, nft_to_lease)
             leaseRecordsKey = sp.sha256(sp.pack((nft_data.token_address, nft_data.token_id)))
-            
-            self.data.leaseRecordKeys.push(leaseRecordsKey)
+            if not self.data.leaseRecords.contains(leaseRecordsKey): 
+                self.data.leaseRecordKeys.push(leaseRecordsKey)
             self.data.leaseRecords[
                 leaseRecordsKey
             ] = sp.record(
@@ -265,19 +265,21 @@ if "templates" not in __name__:
     @sp.add_test()
     def test_game_item():
         scenario = sp.test_scenario("GameItem Test", [fa2.t, fa2.main, LeaseNFT])
-        lease_manager = LeaseNFT.LeaseManager(sp.address("tz1ZX4otZ1FS9w7Xv48CBRLsnnA5oBYyiZMp"))
         admin = sp.test_account("admin")
         recipient = sp.test_account("recipient")
         recipient2 = sp.test_account("recipient2")
+        lease_manager = LeaseNFT.LeaseManager(admin.address)
+
 
         scenario += lease_manager
-        tok0_md = fa2.make_metadata(name="Item Zero", decimals=1, symbol="Item0")
+        tok0_md = fa2.make_metadata(name="Game Item - Sword", decimals=1, symbol="Sword")
+
         game_item = LeaseNFT.GameItem(
             sp.big_map(),
-            {0: sp.address("tz1Zryjiur2NEsoh9xPPa5ovWwn7fFZppZ1U")},
+            {0: recipient.address},
             [tok0_md],
-            sp.address("KT1VqASL1GpCd6wW23dEsr164Csj3ydM2HMH"),
-            sp.address("KT1VqASL1GpCd6wW23dEsr164Csj3ydM2HMH"),
+            lease_manager.address,
+            lease_manager.address,
         )
         scenario += game_item
 
@@ -343,7 +345,7 @@ if "templates" not in __name__:
             token_address=game_item.address,
             token_id=0,
             lease_contract=lease_manager.address,
-            _sender=recipient
+            _sender=admin
         )
 
         # transfer unleased nft token by recipient to admin - valid
