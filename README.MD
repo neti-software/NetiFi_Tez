@@ -32,7 +32,7 @@ It works with the usage of Tezos Custom Policy, the functionality that is presen
 ## Where we are
 Well, what we built during the hackathon is just proof of technology. We know how to make it work for all NFS on the Tezos chain, and we have ideas on how the approach can be monetized and profitable for NFT creators and also users. For us, it's just the beginning of the story.  
 
-## Table of Contents
+## Table of Contents (for the technical details)
 - [Technology Stack](#technology-stack)
 - [Key Features](#key-features)
 - [Future Enhancements](#future-enhancements)
