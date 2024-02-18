@@ -31,9 +31,6 @@ Practical use cases for NeRINE? Let's name a few:
 
 ## Where we are
 Well, what we built during the hackathon is just proof of technology. We know how to make it work for all NFS on the Tezos chain, and we have ideas on how the approach can be monetized and profitable for NFT creators and also users. For us, it's just the beginning of the story.  
-## Technology Stack
-- **SmartPy**: A language for developing smart contracts on the Tezos blockchain.
-- **Smartpy.io IDE**: An integrated development environment for SmartPy.
 
 ## Table of Contents
 - [Overview](#overview)
@@ -45,6 +42,9 @@ Well, what we built during the hackathon is just proof of technology. We know ho
 - [Testing the LeaseManager Contract](#testing-the-leasemanager-contract)
 - [Contributing](#contributing)
 - [Contact](#contact)
+## Technology Stack
+- **SmartPy**: A language for developing smart contracts on the Tezos blockchain.
+- **Smartpy.io IDE**: An integrated development environment for SmartPy.
 
 ## Key Features
 1. **NFT Registration in Lease Manager Contract**: 
