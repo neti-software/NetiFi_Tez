@@ -1,6 +1,6 @@
-# NFT lending platform for GameFi that allows users to borrow Game Item represented by NFT
 
 # NeRINE by Neti
+# Neti Rental Interface for NFT Ecosystem
 
 [![](https://i.ibb.co/F8Fy4X1/995f2fe6-f795-4a6f-b634-5d9a1cf4082a-ezgif-com-webp-to-jpg-converter.jpg)](https://github.com/neti-software/NetiFi_Tez) 
 
