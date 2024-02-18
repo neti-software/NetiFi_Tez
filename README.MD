@@ -2,7 +2,7 @@
 
 # NeRINE by Neti
 
-[![](https://i.ibb.co/YBKd41Z/995f2fe6-f795-4a6f-b634-5d9a1cf4082a.webp|width=25)](https://github.com/neti-software/NetiFi_Tez) 
+[![](https://i.ibb.co/F8Fy4X1/995f2fe6-f795-4a6f-b634-5d9a1cf4082a-ezgif-com-webp-to-jpg-converter.jpg)](https://github.com/neti-software/NetiFi_Tez) 
 
 ## The problem
 Hi, we are Neti - a software development boutique hooked on blockchain. We believe that NFT tokens (apart from the art) have a huge utility potential. But why would you have to buy NFT to use it? You can borrow a bike from your friend without any collateral, you can borrow a laptop or jacket. Why not NFT?
