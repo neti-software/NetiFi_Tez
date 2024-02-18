@@ -1,6 +1,6 @@
 
 # NeRINE by Neti
-# Neti Rental Interface for NFT Ecosystem
+** Neti Rental Interface for NFT Ecosystem **
 
 [![](https://i.ibb.co/F8Fy4X1/995f2fe6-f795-4a6f-b634-5d9a1cf4082a-ezgif-com-webp-to-jpg-converter.jpg)](https://github.com/neti-software/NetiFi_Tez) 
 
@@ -33,7 +33,6 @@ It works with the usage of Tezos Custom Policy, the functionality that is presen
 Well, what we built during the hackathon is just proof of technology. We know how to make it work for all NFS on the Tezos chain, and we have ideas on how the approach can be monetized and profitable for NFT creators and also users. For us, it's just the beginning of the story.  
 
 ## Table of Contents
-- [Overview](#overview)
 - [Technology Stack](#technology-stack)
 - [Key Features](#key-features)
 - [Future Enhancements](#future-enhancements)
