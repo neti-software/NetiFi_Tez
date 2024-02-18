@@ -24,7 +24,7 @@ It works with the usage of Tezos Custom Policy, the functionality that is presen
 - Users don't need to put collateral to borrow the NFT
 - The owner of the NFT has a guarantee that after the agreed period, the token will be returned to him.
 
-Practical use cases for NeRINE? Let's name a few: 
+## Practical use cases for NeRINE? Let's name a few: 
 - Items market in the computer gaming industry, which allows you to make money on the items you have in a safe way
 - Subscription model through renting NFT, which allows any application to behave like a Web2 SaaS platform
 - Safely borrow NFT to a friend (even for free) with the guarantee of return. The NFT can represent tickets, access to some resources, or whatever you need :)
